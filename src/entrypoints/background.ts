@@ -14,6 +14,7 @@ import {
   removeWord,
   setWordLearned,
   recordWordViews,
+  importWords,
   restoreWordsFromSyncIfEmpty
 } from '../lib/storage';
 import { translateWord, translateWordMulti } from '../lib/translate';
@@ -31,7 +32,8 @@ const handlers: ProtocolHandlers = {
     await recordWordViews(viewCounts);
     return { recorded: true };
   },
-  GET_WORDS: async () => ({ words: await getSavedWords() })
+  GET_WORDS: async () => ({ words: await getSavedWords() }),
+  IMPORT_WORDS: async ({ words }) => ({ words: await importWords(words) })
 };
 
 // Whenever the saved-words map changes in storage (from any context: popup,

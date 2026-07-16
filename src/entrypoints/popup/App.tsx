@@ -5,6 +5,7 @@ import { exportWordsToPdf } from '../../lib/pdfExport';
 import { WordListSection } from '../../components/WordListSection';
 import { DictionaryDialog } from '../../components/DictionaryDialog';
 import { ReviewDialog } from '../../components/ReviewDialog';
+import { BackupRow } from '../../components/BackupRow';
 
 type OpenDialog = 'none' | 'dictionary' | 'review';
 
@@ -53,6 +54,8 @@ export function App() {
       >
         📄 ייצוא הרשימה ל-PDF
       </button>
+
+      <BackupRow words={words} />
 
       {openDialog === 'dictionary' && <DictionaryDialog words={words} onClose={closeDialog} />}
       {openDialog === 'review' && <ReviewDialog words={words} onClose={closeDialog} />}

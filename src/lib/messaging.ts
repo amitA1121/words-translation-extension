@@ -36,6 +36,10 @@ export interface Protocol {
     req: Record<string, never>;
     res: { words: SavedWords };
   };
+  IMPORT_WORDS: {
+    req: { words: SavedWords };
+    res: { words: SavedWords };
+  };
 }
 
 export type MessageType = keyof Protocol;
@@ -113,6 +117,11 @@ export const backgroundApi = {
   async getWords(): Promise<SavedWords> {
     const res = await sendRequest('GET_WORDS', {});
     return res?.words ?? {};
+  },
+
+  async importWords(words: SavedWords): Promise<SavedWords | null> {
+    const res = await sendRequest('IMPORT_WORDS', { words });
+    return res?.words ?? null;
   }
 };
 

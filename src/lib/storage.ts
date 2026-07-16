@@ -104,6 +104,16 @@ export async function setWordLearned(word: string, learned: boolean): Promise<Sa
   return words;
 }
 
+// Merges a backup (e.g. exported from an older installation) into the
+// current list. Imported entries win on key conflicts — a restore should
+// bring back what the backup says.
+export async function importWords(imported: SavedWords): Promise<SavedWords> {
+  const words = await getSavedWords();
+  const merged = { ...words, ...imported };
+  await persistWords(merged);
+  return merged;
+}
+
 // Adds a batch of confirmed on-screen views ({ wordKey: count }) — the
 // content script batches these to avoid a storage write per word per
 // scroll frame. Silently ignores words that aren't saved.
