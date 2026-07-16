@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import { browser } from 'wxt/browser';
 
 function isPdfUrl(url: string): boolean {
+  // Check both the path and the full URL — some PDFs are served through
+  // query strings (e.g. viewer?doc=file.pdf), same as the v1 behavior.
   try {
-    return /\.pdf($|\?|#)/i.test(new URL(url).pathname);
+    const parsed = new URL(url);
+    return /\.pdf($|\?|#)/i.test(parsed.pathname) || /\.pdf($|\?|#)/i.test(parsed.href);
   } catch {
     return false;
   }

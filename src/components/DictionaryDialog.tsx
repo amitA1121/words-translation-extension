@@ -1,5 +1,9 @@
 // The "מילון מתקדם" modal: EN<->HE lookup with language swap, multiple
 // translation candidates, text-to-speech, and save-to-list.
+//
+// Lookup triggering matches the original behavior exactly: debounced
+// 400ms after the last keystroke, and Enter cancels the debounce and
+// looks up immediately.
 
 import { useEffect, useRef, useState } from 'react';
 import { backgroundApi } from '../lib/messaging';
@@ -29,47 +33,65 @@ export function DictionaryDialog({ words, onClose }: DictionaryDialogProps) {
   const [input, setInput] = useState('');
   const [lookup, setLookup] = useState<LookupState>({ status: 'idle' });
   const inputRef = useRef<HTMLInputElement>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const requestIdRef = useRef(0);
   const targetLang: Lang = sourceLang === 'en' ? 'he' : 'en';
 
   useEffect(() => {
     inputRef.current?.focus();
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
   }, []);
 
-  // Debounced lookup: runs LOOKUP_DEBOUNCE_MS after the last keystroke.
-  // The cleanup cancels both the timer and (via the flag) a stale response
-  // that resolves after the input already changed.
-  useEffect(() => {
-    const word = input.trim();
+  function cancelPendingLookup(): void {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    requestIdRef.current++; // any in-flight response becomes stale
+  }
+
+  function runLookup(word: string): void {
     if (!word) {
       setLookup({ status: 'idle' });
       return;
     }
+    const validator = sourceLang === 'en' ? WORD_RE : HEBREW_RE;
+    if (!validator.test(word)) {
+      setLookup({ status: 'error', message: `נא להקליד מילה ב${LANG_NAMES[sourceLang]}` });
+      return;
+    }
 
-    let stale = false;
-    const timer = setTimeout(() => {
-      const validator = sourceLang === 'en' ? WORD_RE : HEBREW_RE;
-      if (!validator.test(word)) {
-        setLookup({ status: 'error', message: `נא להקליד מילה ב${LANG_NAMES[sourceLang]}` });
-        return;
-      }
-      setLookup({ status: 'loading' });
-      void backgroundApi.translateMulti(word, sourceLang, targetLang).then((translations) => {
-        if (stale) return;
-        setLookup(
-          translations
-            ? { status: 'done', word, translations }
-            : { status: 'error', message: 'שגיאה בתרגום' }
-        );
-      });
-    }, LOOKUP_DEBOUNCE_MS);
+    const requestId = ++requestIdRef.current;
+    setLookup({ status: 'loading' });
+    void backgroundApi.translateMulti(word, sourceLang, targetLang).then((translations) => {
+      if (requestIdRef.current !== requestId) return; // input changed while awaiting
+      setLookup(
+        translations
+          ? { status: 'done', word, translations }
+          : { status: 'error', message: 'שגיאה בתרגום' }
+      );
+    });
+  }
 
-    return () => {
-      stale = true;
-      clearTimeout(timer);
-    };
-  }, [input, sourceLang, targetLang]);
+  function onInputChange(value: string): void {
+    setInput(value);
+    cancelPendingLookup();
+    const word = value.trim();
+    if (!word) {
+      setLookup({ status: 'idle' });
+      return;
+    }
+    debounceRef.current = setTimeout(() => runLookup(word), LOOKUP_DEBOUNCE_MS);
+  }
+
+  function onInputKeyDown(e: React.KeyboardEvent): void {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    cancelPendingLookup();
+    runLookup(input.trim());
+  }
 
   function swapLangs(): void {
+    cancelPendingLookup();
     setSourceLang(targetLang);
     setInput('');
     setLookup({ status: 'idle' });
@@ -100,7 +122,8 @@ export function DictionaryDialog({ words, onClose }: DictionaryDialogProps) {
           dir={sourceLang === 'en' ? 'ltr' : 'rtl'}
           placeholder={sourceLang === 'en' ? 'הקלד מילה באנגלית...' : 'הקלד מילה בעברית...'}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => onInputChange(e.target.value)}
+          onKeyDown={onInputKeyDown}
         />
         <button
           className="wh-dict-speak-btn"
