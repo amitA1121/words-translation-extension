@@ -1,0 +1,631 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 320px;
+  max-height: 480px;
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  background: #fffaf3;
+  color: #222;
+  overflow-y: auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #ff922b;
+  color: white;
+  position: sticky;
+  top: 0;
+}
+
+header h1 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.wh-count {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.wh-open-pdf-btn {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 10px 12px;
+  background: #ff922b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wh-open-pdf-btn[hidden] {
+  display: none;
+}
+
+.wh-open-pdf-btn:hover {
+  background: #f76707;
+}
+
+.wh-tools-row {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px 0;
+}
+
+.wh-export-pdf-btn {
+  display: block;
+  width: calc(100% - 24px);
+  margin: 8px 12px 0;
+  background: white;
+  color: #b5591a;
+  border: 1px dashed #ffd8a8;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wh-export-pdf-btn:hover {
+  background: #fff4e6;
+  border-style: solid;
+}
+
+.wh-export-pdf-btn:active {
+  background: #ffe8cc;
+}
+
+.wh-open-dict-btn,
+.wh-open-review-btn {
+  flex: 1;
+  display: block;
+  background: white;
+  color: #b5591a;
+  border: 1px solid #ffd8a8;
+  border-radius: 8px;
+  padding: 9px 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wh-open-dict-btn:hover,
+.wh-open-review-btn:hover {
+  background: #fff4e6;
+}
+
+.wh-dict-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.wh-dict-overlay[hidden] {
+  display: none;
+}
+
+.wh-dict-dialog {
+  width: 290px;
+  max-height: 440px;
+  background: #fffaf3;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.wh-dict-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  background: #ff922b;
+  color: white;
+}
+
+.wh-dict-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.wh-review-dialog {
+  width: 290px;
+  max-height: 440px;
+  background: #fffaf3;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.wh-review-progress {
+  font-size: 12px;
+  font-weight: 600;
+  width: 44px;
+  text-align: left;
+}
+
+.wh-review-body {
+  padding: 16px;
+}
+
+.wh-review-empty {
+  padding: 30px 10px;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.wh-review-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wh-review-card {
+  background: white;
+  border: 2px solid #ffd8a8;
+  border-radius: 12px;
+  padding: 30px 16px;
+  text-align: center;
+  cursor: pointer;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.wh-review-card:hover {
+  border-color: #ff922b;
+}
+
+.wh-review-card-revealed {
+  cursor: default;
+}
+
+.wh-review-word-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.wh-review-word {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  direction: ltr;
+}
+
+.wh-review-speak-btn {
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid #ffd8a8;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.wh-review-speak-btn:hover {
+  background: #fff4e6;
+}
+
+.wh-review-translation {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b5591a;
+}
+
+.wh-review-hint {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.wh-review-card-revealed .wh-review-hint {
+  display: none;
+}
+
+.wh-review-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.wh-review-know-btn,
+.wh-review-dont-know-btn {
+  flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.wh-review-know-btn {
+  background: #2b8a3e;
+  color: white;
+}
+
+.wh-review-know-btn:hover {
+  background: #237032;
+}
+
+.wh-review-dont-know-btn {
+  background: #e03131;
+  color: white;
+}
+
+.wh-review-dont-know-btn:hover {
+  background: #c92a2a;
+}
+
+.wh-dict-spacer {
+  width: 22px;
+}
+
+.wh-dict-close-btn {
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.wh-dict-close-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.wh-dict-lang-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px 0;
+}
+
+.wh-dict-lang-btn {
+  flex: 1;
+  background: white;
+  border: 1px solid #ffd8a8;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b5591a;
+  cursor: default;
+  text-align: center;
+}
+
+.wh-dict-swap-btn {
+  flex-shrink: 0;
+  background: #ff922b;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.wh-dict-swap-btn:hover {
+  background: #f76707;
+}
+
+.wh-dict-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px 0;
+}
+
+.wh-dict-input {
+  flex: 1;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  border: 1px solid #ffd8a8;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+}
+
+.wh-dict-input:focus {
+  border-color: #ff922b;
+}
+
+.wh-dict-speak-btn {
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid #ffd8a8;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.wh-dict-speak-btn:hover {
+  background: #fff4e6;
+}
+
+.wh-dict-results {
+  margin-top: 8px;
+  padding: 0 12px 12px;
+  overflow-y: auto;
+}
+
+.wh-dict-loading,
+.wh-dict-error {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.wh-dict-error {
+  color: #d9480f;
+}
+
+.wh-dict-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: white;
+  border: 1px solid #ffd8a8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 6px;
+}
+
+.wh-dict-result-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.wh-dict-add-btn {
+  flex-shrink: 0;
+  background: #2b8a3e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.wh-dict-add-btn:hover {
+  background: #237032;
+}
+
+.wh-dict-add-btn:disabled {
+  background: #ccc;
+  cursor: default;
+}
+
+.wh-search-wrap {
+  padding: 10px 12px 14px;
+}
+
+.wh-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid #ffd8a8;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  direction: rtl;
+  outline: none;
+}
+
+.wh-search-input:focus {
+  border-color: #ff922b;
+}
+
+.wh-toolbar-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 12px 8px;
+}
+
+.wh-sort-select {
+  flex-shrink: 0;
+  padding: 6px 8px;
+  border: 1px solid #ffd8a8;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: inherit;
+  color: #333;
+  background: white;
+  direction: rtl;
+}
+
+.wh-filter-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wh-filter-toggle input {
+  cursor: pointer;
+}
+
+.wh-stats {
+  padding: 0 12px 8px;
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+}
+
+.wh-empty {
+  padding: 24px 16px;
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.wh-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+}
+
+.wh-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: white;
+  border: 1px solid #ffd8a8;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+
+.wh-item-learned {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+.wh-item-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wh-item-word {
+  font-weight: 700;
+  direction: ltr;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+.wh-item-learned .wh-item-word {
+  color: #888;
+}
+
+.wh-item-translation {
+  color: #b5591a;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.wh-item-learned .wh-item-translation {
+  color: #999;
+}
+
+.wh-item-badge {
+  display: inline-block;
+  margin-top: 2px;
+  background: #d3f9d8;
+  color: #2b8a3e;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.wh-item-views {
+  display: inline-block;
+  margin-top: 2px;
+  color: #999;
+  font-size: 11px;
+  width: fit-content;
+}
+
+.wh-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.wh-item-learned-btn {
+  background: none;
+  border: 1px solid #ffd8a8;
+  color: #b5591a;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: inherit;
+  line-height: 1;
+  padding: 5px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.wh-item-learned-btn:hover {
+  background: #ffe8cc;
+}
+
+.wh-item-learned .wh-item-learned-btn {
+  border-color: #d3f9d8;
+  color: #2b8a3e;
+}
+
+.wh-item-learned .wh-item-learned-btn:hover {
+  background: #ebfbee;
+}
+
+.wh-item-delete {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 4px 6px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.wh-item-delete:hover {
+  background: #ffe8cc;
+  color: #d9480f;
+}

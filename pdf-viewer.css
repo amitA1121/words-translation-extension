@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #525659;
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+}
+
+#pv-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 44px;
+  background: #323639;
+  color: #eee;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  z-index: 10;
+  direction: ltr;
+}
+
+#pv-toolbar button {
+  background: #4a4e51;
+  color: #eee;
+  border: none;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#pv-toolbar button:hover {
+  background: #5a5e61;
+}
+
+.pv-sep {
+  width: 1px;
+  height: 20px;
+  background: #5a5e61;
+  margin: 0 4px;
+}
+
+#pv-filename {
+  color: #aaa;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}
+
+#pv-status {
+  color: #ffb86b;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+#pv-container {
+  position: absolute;
+  top: 44px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  padding: 16px 0 40px;
+}
+
+#pv-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.pv-page {
+  position: relative;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.pv-page canvas {
+  display: block;
+}
+
+.textLayer {
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: hidden;
+  line-height: 1;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  caret-color: CanvasText;
+  z-index: 0;
+}
+
+.textLayer span,
+.textLayer br {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+.textLayer ::selection {
+  background: rgba(0, 100, 255, 0.3);
+}
+
+.wh-pdf-word-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  transform-origin: 0 0;
+}
+
+.wh-pdf-word-layer .wh-pdf-word {
+  color: transparent;
+  pointer-events: none;
+  white-space: pre;
+  cursor: pointer;
+}
+
+.wh-pdf-word-layer .wh-pdf-word.wh-highlight {
+  pointer-events: auto;
+  background-color: rgba(255, 216, 168, 0.55);
+  border-radius: 2px;
+  mix-blend-mode: multiply;
+}

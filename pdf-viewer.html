@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>מציג PDF - מילון מילים</title>
+  <link rel="stylesheet" href="pdf-viewer.css" />
+</head>
+<body>
+  <div id="pv-toolbar">
+    <button id="pv-prev" title="עמוד קודם">‹</button>
+    <span id="pv-page-info">- / -</span>
+    <button id="pv-next" title="עמוד הבא">›</button>
+    <span class="pv-sep"></span>
+    <button id="pv-zoom-out" title="הקטן">−</button>
+    <span id="pv-zoom-level">100%</span>
+    <button id="pv-zoom-in" title="הגדל">+</button>
+    <span class="pv-sep"></span>
+    <span id="pv-filename"></span>
+    <span id="pv-status"></span>
+  </div>
+  <div id="pv-container">
+    <div id="pv-pages"></div>
+  </div>
+
+  <link rel="stylesheet" href="content.css" />
+  <script src="pdf-viewer.js" type="module"></script>
+  <script src="content.js"></script>
+</body>
+</html>

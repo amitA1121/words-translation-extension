@@ -1,0 +1,110 @@
+.wh-highlight {
+  background-color: #ffd8a8;
+  border-radius: 3px;
+  padding: 0 2px;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(230, 126, 34, 0.25);
+  transition: background-color 0.15s ease;
+}
+
+.wh-highlight:hover {
+  background-color: #ffc078;
+}
+
+.wh-overlay-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.wh-overlay-layer .wh-highlight {
+  pointer-events: auto;
+  background-color: rgba(255, 216, 168, 0.55);
+  box-shadow: none;
+  border-radius: 2px;
+  mix-blend-mode: multiply;
+}
+
+#wh-tooltip {
+  position: fixed;
+  z-index: 2147483647;
+  max-width: 260px;
+  background: #ffffff;
+  color: #1a1a1a;
+  border: 1px solid #e0a458;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
+  padding: 10px 12px;
+  font-family: -apple-system, "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  direction: rtl;
+  line-height: 1.4;
+}
+
+#wh-tooltip .wh-tooltip-word-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  direction: ltr;
+  margin-bottom: 4px;
+}
+
+#wh-tooltip .wh-tooltip-word {
+  font-weight: 700;
+  color: #333;
+  font-size: 15px;
+}
+
+#wh-tooltip .wh-tooltip-speak-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid #e0a458;
+  border-radius: 999px;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+#wh-tooltip .wh-tooltip-speak-btn:hover {
+  background: #fff4e6;
+}
+
+#wh-tooltip .wh-tooltip-body {
+  color: #b5591a;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+#wh-tooltip .wh-tooltip-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#wh-tooltip .wh-tooltip-btn {
+  background: #ff922b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+#wh-tooltip .wh-tooltip-btn:hover {
+  background: #f76707;
+}
+
+#wh-tooltip .wh-tooltip-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
