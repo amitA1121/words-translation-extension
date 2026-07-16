@@ -1,72 +1,72 @@
-# מילון מילים - סמן ותרגם
+# Words Translation Extension
 
-הרחבת Chrome ללימוד אנגלית: לחיצה כפולה על מילה באתר או ב-PDF מציגה תרגום לעברית ומאפשרת לסמן אותה. מילים שמורות מודגשות אוטומטית בכל מקום שבו הן מופיעות.
+A Chrome extension for learning English: double-click any word on a website or in a PDF to get an instant Hebrew translation and save it to your word list. Saved words are automatically highlighted everywhere they appear.
 
-## פיצ'רים
+## Features
 
-- **סימון והדגשה** — לחיצה כפולה (או לחיצה בודדת על מילה שכבר מסומנת) מציגה תרגום מיידי דרך Google Translate.
-- **תמיכה מלאה ב-PDF** — viewer עצמאי מבוסס [pdf.js](https://github.com/mozilla/pdf.js) עם שכבת מילים מדויקת (per-word, לא per-line), כולל תמיכה בגופנים פרופורציונליים.
-- **מילון מתקדם** — חיפוש דו-כיווני (אנגלית↔עברית) עם מספר תרגומים אפשריים והשמעה קולית.
-- **מצב חזרה (flashcards)** — תרגול אקטיבי על מילים לא-נלמדות, עם ערבוב אקראי.
-- **מעקב תדירות** — סופר כמה פעמים כל מילה שמורה נצפתה בפועל (לא רק הופיעה) בדפים שביקרת בהם.
-- **הוספה דרך קליק ימני** — מסמן טקסט (כולל ביטויים מרובי-מילים) ולוחץ ימני להוספה למילון.
-- **ייצוא ל-PDF** — רשימת המילים כטבלה מסודרת (Word / תרגום / סטטוס), עם פונט עברי מוטמע.
-- **גיבוי אוטומטי** — הרשימה נשמרת גם ב-`chrome.storage.sync`, כך שהיא שורדת הסרה/התקנה מחדש של ההרחבה (כל עוד מחוברים לאותו חשבון Google).
+- **Click to translate & highlight** — double-click a word (or single-click an already-highlighted one) for an instant translation via Google Translate.
+- **Full PDF support** — a standalone [pdf.js](https://github.com/mozilla/pdf.js)-based viewer with a precise word layer (per-word, not per-line), including proportional-font support.
+- **Advanced dictionary** — bidirectional lookup (English ↔ Hebrew) with multiple translation candidates and text-to-speech.
+- **Flashcard review mode** — active practice on unlearned words, shuffled each round.
+- **View tracking** — counts how many times each saved word was actually seen on screen (not just present on the page) while you browse.
+- **Right-click to add** — select any text (including multi-word phrases) and add it to your dictionary from the context menu.
+- **PDF export** — your word list as a formatted table (Word / Translation / Status) with an embedded Hebrew font.
+- **Automatic backup** — the list is mirrored to `chrome.storage.sync`, so it survives uninstalling/reinstalling the extension (as long as you're signed into the same Google account).
 
-## התקנה (מצב מפתח)
+## Installation (developer mode)
 
-1. `chrome://extensions` → הפעל "מצב מפתח"
-2. "טען הרחבה שלא נארזה" → בחר את התיקייה הזו
+1. Go to `chrome://extensions` and enable **Developer mode**.
+2. Click **Load unpacked** and select this folder.
 
-## מבנה הפרויקט
+## Project structure
 
 ```
-background.js           - service worker (composition root — חיווט בלבד)
-content.js              - טוען classic-script דק שמייבא דינמית את contentEntry.js
-popup.html/js/css       - ה-UI של הפופאפ (composition root)
-pdf-viewer.html/js/css  - ה-PDF viewer העצמאי (composition root)
+background.js           - service worker (composition root — wiring only)
+content.js              - thin classic-script loader that dynamically imports contentEntry.js
+popup.html/js/css       - the popup UI (composition root)
+pdf-viewer.html/js/css  - the standalone PDF viewer (composition root)
 
 src/
-  shared/               - שכבה משותפת לכל ההקשרים (background / content / popup / viewer):
-    backgroundApi.js    -   פרוטוקול ההודעות במקום אחד: קבועי MSG + client מוקלד לכל הודעה
-    words.js            -   מקור אמת יחיד ל"מהי מילה" (regexים) + סינון מילים שנלמדו
-    dom.js              -   קבועי class/id משותפים (highlight, pdf-word, tooltip) + isEditable/byId
-  background/           - צד ה-service worker: message router (מפת handlers) + broadcast לטאבים
-  storage/              - שכבת chrome.storage.local + sync (כולל sharding לגיבוי)
-  translation/          - קריאות ל-Google Translate
-  highlighting/         - זיהוי מילים, הדגשה בדפים רגילים/PDF, מעקב תדירות צפייה
-  ui/                   - כל רכיב UI כמודול/מחלקה נפרדים (tooltip, דיאלוגים, רשימת מילים)
-  pdf-viewer/           - רינדור עמודי PDF (PdfRenderer), שכבת מילים, ו-toolbar/ניווט (ViewerController)
-  audio/                - השמעה קולית משותפת (Web Speech API)
-  dev/                  - מנגנון auto-reload לפיתוח
+  shared/               - layer shared by every context (background / content / popup / viewer):
+    backgroundApi.js    -   the message protocol in one place: MSG constants + a typed client per message
+    words.js            -   single source of truth for "what is a word" (regexes) + learned-word filtering
+    dom.js              -   shared class/id constants (highlight, pdf-word, tooltip) + isEditable/byId
+  background/           - service-worker side: message router (handler map) + tab broadcast
+  storage/              - chrome.storage.local + sync layer (including sharded backup)
+  translation/          - Google Translate calls
+  highlighting/         - word matching, highlighting on regular pages/PDFs, view tracking
+  ui/                   - each UI piece as its own module/class (tooltip, dialogs, word list)
+  pdf-viewer/           - PDF page rendering (PdfRenderer), word layer, toolbar/navigation (ViewerController)
+  audio/                - shared text-to-speech (Web Speech API)
+  dev/                  - auto-reload mechanism for development
 
 scripts/
-  generate-dev-watch-list.js  - מעדכן את רשימת הקבצים שה-dev-reload עוקב אחריהם
+  generate-dev-watch-list.js  - regenerates the file list the dev-reload watcher tracks
 ```
 
-## הערות ארכיטקטורה
+## Architecture notes
 
-- **ES Modules אמיתיים** בכל מקום שאפשר (`background.js`, `popup.js`, `pdf-viewer.js`) — ללא build step.
-- **חריגה**: Manifest V3 לא מאפשר ל-content scripts שמוגדרים ב-manifest להשתמש ב-`import`/`export` סטטי. הפתרון: `content.js` הוא loader דק (classic script) שמריץ `import()` דינמי כדי לטעון את `src/ui/contentEntry.js` (ES module אמיתי).
-- **אין React/Tailwind** — שניהם דורשים build step (JSX transpilation / Tailwind CLI) שהיה שובר את העיקרון של הרצה ישירה בדפדפן ללא כלי בנייה.
+- **Real ES modules** everywhere possible (`background.js`, `popup.js`, `pdf-viewer.js`) — no build step.
+- **The one exception:** Manifest V3 does not allow content scripts declared in the manifest to use static `import`/`export`. The workaround: `content.js` is a thin classic-script loader that uses dynamic `import()` to load `src/ui/contentEntry.js` (a real ES module).
+- **No React/Tailwind** — both require a build step (JSX transpilation / Tailwind CLI) that would break the principle of running directly in the browser with no tooling.
 
-## פיתוח
+## Development
 
-לאחר הוספת/מחיקת/שינוי שם של קובץ מודול, הרץ:
+After adding/removing/renaming a module file, run:
 
 ```bash
 node scripts/generate-dev-watch-list.js
 ```
 
-זה מעדכן את `src/dev/devReload.js` כך שיעקוב אחרי כל הקבצים הרלוונטיים. לאחר מכן רענן את ההרחבה פעם אחת ב-`chrome://extensions` (רק אם `background.js`/`manifest.json` השתנו) — כל שינוי אחר מתעדכן אוטומטית בטאבים פתוחים תוך כשנייה.
+This updates `src/dev/devReload.js` to track all relevant files. Then reload the extension once in `chrome://extensions` (only needed when `background.js`/`manifest.json` changed) — any other change is pushed automatically into open tabs within about a second.
 
-## קרדיטים
+## Credits
 
-- [pdf.js](https://github.com/mozilla/pdf.js) (Mozilla, Apache-2.0) — רינדור PDF.
-- [jsPDF](https://github.com/parallax/jsPDF) (MIT) — ייצוא רשימת המילים ל-PDF.
-- [Noto Sans Hebrew](https://fonts.google.com/noto/specimen/Noto+Sans+Hebrew) (OFL) — גופן עברי מוטמע בייצוא.
-- התרגום משתמש ב-endpoint הציבורי הלא-רשמי של Google Translate (ללא API key). הוא אינו מתועד ועלול להשתנות או להיחסם ללא התראה — לשימוש אישי/לימודי.
+- [pdf.js](https://github.com/mozilla/pdf.js) (Mozilla, Apache-2.0) — PDF rendering.
+- [jsPDF](https://github.com/parallax/jsPDF) (MIT) — word-list PDF export.
+- [Noto Sans Hebrew](https://fonts.google.com/noto/specimen/Noto+Sans+Hebrew) (OFL) — Hebrew font embedded in the export.
+- Translation uses Google Translate's unofficial public endpoint (no API key). It is undocumented and may change or be blocked without notice — intended for personal/educational use.
 
-## רישיון
+## License
 
 [MIT](LICENSE)
