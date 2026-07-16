@@ -1,3 +1,13 @@
+# Dependencies & build output
+node_modules/
+.output/
+.wxt/
+stats.html
+stats-*.json
+
+# pdf.js data assets — copied from node_modules on postinstall
+public/pdfjs/
+
 # OS junk
 Thumbs.db
 Desktop.ini
@@ -11,3 +21,6 @@ Desktop.ini
 *.crx
 *.pem
 *.zip
+
+# Test/coverage output
+coverage/
