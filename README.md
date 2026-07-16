@@ -14,6 +14,7 @@ Built with **React 19 + TypeScript** on **[WXT](https://wxt.dev)** (Vite-based M
 - **Right-click to add** — select any text (including multi-word phrases) and add it to your dictionary from the context menu.
 - **PDF export** — your word list as a formatted table (Word / Translation / Status) with an embedded Hebrew font.
 - **Automatic backup** — the list is mirrored to `chrome.storage.sync` (sharded under its per-item size caps), so it survives uninstalling/reinstalling the extension.
+- **JSON backup & restore** — export the whole word list as a file and import it back (validated against the schema), for manual backups or moving between installations.
 
 ## Getting started
 
