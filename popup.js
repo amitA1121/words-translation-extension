@@ -68,5 +68,20 @@ byId('wh-export-pdf').addEventListener('click', () => {
   exportWordsToPdf(getAllWords());
 });
 
+// Raw-JSON backup, used to migrate the word list into the v2 (WXT/React)
+// build, whose unpacked install has a different extension identity and
+// therefore separate storage.
+byId('wh-export-json').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(getAllWords(), null, 2)], {
+    type: 'application/json'
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'words-backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
 loadWords();
 setupPdfOpenButton(byId('wh-open-pdf'));
