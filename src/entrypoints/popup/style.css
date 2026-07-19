@@ -629,3 +629,37 @@ header h1 {
   background: #ffe8cc;
   color: #d9480f;
 }
+
+.wh-item-speak-btn {
+  background: none;
+  border: 1px solid #ffd8a8;
+  border-radius: 999px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.wh-item-speak-btn:hover {
+  background: #fff4e6;
+}
+
+.wh-dict-result-speak-btn {
+  background: white;
+  border: 1px solid #ffd8a8;
+  border-radius: 999px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.wh-dict-result-speak-btn:hover {
+  background: #fff4e6;
+}

@@ -143,6 +143,13 @@ export function DictionaryDialog({ words, onClose }: DictionaryDialogProps) {
             return (
               <div className="wh-dict-result-row" key={translation}>
                 <span className="wh-dict-result-text">{translation}</span>
+                <button
+                  className="wh-dict-result-speak-btn"
+                  title="השמע הגייה"
+                  onClick={() => speakText(translation, LANG_SPEECH_CODES[targetLang])}
+                >
+                  🔊
+                </button>
                 {canSave && (
                   <button
                     className="wh-dict-add-btn"

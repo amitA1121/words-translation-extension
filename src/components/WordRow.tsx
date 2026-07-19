@@ -1,4 +1,5 @@
 import { backgroundApi } from '../lib/messaging';
+import { speakText } from '../lib/speech';
 import type { WordEntry } from '../lib/types';
 
 // One row in the saved-words list. Mutations go through the background;
@@ -15,6 +16,13 @@ export function WordRow({ entry }: { entry: WordEntry }) {
         )}
       </div>
       <div className="wh-item-actions">
+        <button
+          className="wh-item-speak-btn"
+          title="השמע הגייה"
+          onClick={() => speakText(entry.original, 'en-US')}
+        >
+          🔊
+        </button>
         <button
           className="wh-item-learned-btn"
           title={entry.learned ? 'סמן שוב כמילה ללימוד' : 'סמן כנלמד (יפסיק להיות מסומן בכתום)'}
