@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useWords } from '../../hooks/useWords';
 import { usePdfViewerButton } from '../../hooks/usePdfViewerButton';
-import { exportWordsToPdf } from '../../lib/pdfExport';
 import { WordListSection } from '../../components/WordListSection';
 import { DictionaryDialog } from '../../components/DictionaryDialog';
 import { ReviewDialog } from '../../components/ReviewDialog';
@@ -13,7 +12,22 @@ export function App() {
   const words = useWords();
   const pdfViewer = usePdfViewerButton();
   const [openDialog, setOpenDialog] = useState<OpenDialog>('none');
+  const [exporting, setExporting] = useState(false);
   const closeDialog = () => setOpenDialog('none');
+
+  // jsPDF plus the embedded Hebrew font weigh several hundred KB. A static
+  // import would put them on the popup's startup path — the popup can't
+  // paint until its bundle is parsed — so they're pulled in only when the
+  // user actually exports.
+  async function handleExportPdf(): Promise<void> {
+    setExporting(true);
+    try {
+      const { exportWordsToPdf } = await import('../../lib/pdfExport');
+      exportWordsToPdf(words);
+    } finally {
+      setExporting(false);
+    }
+  }
 
   return (
     <>
@@ -50,9 +64,10 @@ export function App() {
       <button
         id="wh-export-pdf"
         className="wh-export-pdf-btn"
-        onClick={() => exportWordsToPdf(words)}
+        disabled={exporting}
+        onClick={() => void handleExportPdf()}
       >
-        📄 ייצוא הרשימה ל-PDF
+        {exporting ? '📄 מייצא...' : '📄 ייצוא הרשימה ל-PDF'}
       </button>
 
       <BackupRow words={words} />

@@ -6,7 +6,7 @@
 
 import { useRef } from 'react';
 import { backgroundApi } from '../lib/messaging';
-import { SavedWordsSchema, type SavedWords } from '../lib/types';
+import type { SavedWords } from '../lib/types';
 
 function downloadWordsJson(words: SavedWords): void {
   const blob = new Blob([JSON.stringify(words, null, 2)], { type: 'application/json' });
@@ -24,6 +24,9 @@ export function BackupRow({ words }: { words: SavedWords }) {
   async function onImportFile(file: File): Promise<void> {
     let imported: SavedWords;
     try {
+      // Zod is only needed to validate an imported file — loaded on demand
+      // so the validator stays off the popup's startup path.
+      const { SavedWordsSchema } = await import('../lib/types');
       const parsed = SavedWordsSchema.safeParse(JSON.parse(await file.text()));
       if (!parsed.success) throw new Error('schema mismatch');
       imported = parsed.data;

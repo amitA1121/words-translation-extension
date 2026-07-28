@@ -8,14 +8,13 @@
 
 import { browser } from 'wxt/browser';
 import { SavedWordsSchema, type SavedWords } from './types';
+import { WORDS_STORAGE_KEY } from './storageKeys';
 import {
   SYNC_SHARD_COUNT_KEY,
   chunkWordsForSync,
   mergeShards,
   shardKey
 } from './syncShards';
-
-export const WORDS_STORAGE_KEY = 'savedWords';
 
 export async function getSavedWords(): Promise<SavedWords> {
   const data = await browser.storage.local.get(WORDS_STORAGE_KEY);

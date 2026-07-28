@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import { browser } from 'wxt/browser';
 import { backgroundApi } from '../lib/messaging';
-import { WORDS_STORAGE_KEY } from '../lib/storage';
+import { WORDS_STORAGE_KEY } from '../lib/storageKeys';
 import type { SavedWords } from '../lib/types';
 
 export function useWords(): SavedWords {

@@ -8,7 +8,6 @@ import {
   type ProtocolHandlers
 } from '../lib/messaging';
 import {
-  WORDS_STORAGE_KEY,
   getSavedWords,
   saveWord,
   removeWord,
@@ -17,6 +16,7 @@ import {
   importWords,
   restoreWordsFromSyncIfEmpty
 } from '../lib/storage';
+import { WORDS_STORAGE_KEY } from '../lib/storageKeys';
 import { translateWord, translateWordMulti } from '../lib/translate';
 import type { SavedWords } from '../lib/types';
 
