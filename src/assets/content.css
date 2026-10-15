@@ -11,6 +11,25 @@
   background-color: #ffc078;
 }
 
+/* In-page highlights carry their own text color instead of inheriting the
+   site's: on dark-mode pages the inherited text is light, which is
+   unreadable on the light-orange fill. !important because site styles
+   (dark-mode themes, reader extensions) often force colors on every span.
+   PDF-viewer words are excluded — their text is deliberately transparent
+   over the rendered canvas. */
+.wh-highlight:not(.wh-pdf-word) {
+  background-color: #ffd8a8 !important;
+  background-image: none !important;
+  color: #1a1a1a !important;
+  -webkit-text-fill-color: #1a1a1a !important;
+  text-shadow: none !important;
+  box-shadow: 0 0 0 1px #e67e22 !important;
+}
+
+.wh-highlight:not(.wh-pdf-word):hover {
+  background-color: #ffc078 !important;
+}
+
 .wh-overlay-layer {
   position: absolute;
   top: 0;
