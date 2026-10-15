@@ -1,7 +1,7 @@
 {
-  "name": "words-translation-extension",
+  "name": "lexigo",
   "description": "Chrome extension for learning English: instant Hebrew translations, word highlighting everywhere (including PDFs), flashcards, and PDF export.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "type": "module",
   "scripts": {

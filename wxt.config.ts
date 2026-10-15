@@ -7,13 +7,13 @@ export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'מילון מילים - סמן ותרגם',
+    name: 'Lexigo',
     description:
       'לחץ על מילה באנגלית, קבל תרגום לעברית, וסמן אותה אוטומטית בכל מקום שהיא מופיעה - כולל קבצי PDF.',
     permissions: ['storage', 'activeTab', 'tabs', 'contextMenus'],
     host_permissions: ['<all_urls>'],
     action: {
-      default_title: 'מילון מילים'
+      default_title: 'Lexigo'
     },
     icons: {
       16: '/icons/icon16.png',

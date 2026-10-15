@@ -1,4 +1,4 @@
-# Words Translation Extension
+# Lexigo
 
 Chrome extension for learning English — double-click any word to get an instant Hebrew translation, and see your saved words highlighted on every page and PDF.
 
