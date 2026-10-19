@@ -7,7 +7,7 @@ export default defineConfig({
   srcDir: 'src',
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'Lexigo',
+    name: 'Lexigo - תרגום מילים',
     description:
       'לחץ על מילה באנגלית, קבל תרגום לעברית, וסמן אותה אוטומטית בכל מקום שהיא מופיעה - כולל קבצי PDF.',
     permissions: ['storage', 'activeTab', 'tabs', 'contextMenus'],
