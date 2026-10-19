@@ -13,7 +13,7 @@ export default defineConfig({
     permissions: ['storage', 'activeTab', 'tabs', 'contextMenus'],
     host_permissions: ['<all_urls>'],
     action: {
-      default_title: 'Lexigo'
+      default_title: 'Lexigo - תרגום מילים'
     },
     icons: {
       16: '/icons/icon16.png',
